@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Controle de Gastos</title>
+    </head>
+    <body>
+        <h1>Gastos Diários</h1>
+
+        <form id="filtros">
+            <label>
+                Mês:
+                <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
+            </label>
+            <label>
+                Ano:
+                <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
+            </label>
+            <label>
+                Início do período:
+                <input type="date" id="inicio" />
+            </label>
+            <label>
+                Fim do período:
+                <input type="date" id="fim" />
+            </label>
+            <label>
+                Categoria:
+                <input type="text" id="categoria" placeholder="Ex: Alimentação" />
+            </label>
+            <button type="button" id="buscar">Buscar</button>
+        </form>
+
+        <ul id="lista-gastos"></ul>
+
+        <script src="script.js"></script>
+    </body>
+</html>
