@@ -30,11 +30,21 @@
                 Categoria:
                 <input type="text" id="categoria" placeholder="Ex: Alimentação" />
             </label>
+            <label>
+                Itens por página:
+                <input type="number" id="qtdPorPagina" min="1" value="5" />
+            </label>
             <button type="button" id="buscar">Buscar</button>
         </form>
 
         <ul id="lista-gastos"></ul>
 
+        <div class="paginacao" id="paginacao">
+            <button id="anterior">Anterior</button>
+            <span id="pagina-info">Página 1</span>
+            <select id="pagina-select"></select>
+            <button id="proximo">Próxima</button>
+        </div>
         <script src="script.js"></script>
     </body>
 </html>
