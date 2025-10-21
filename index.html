@@ -3,41 +3,60 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="style.css" />
         <title>Controle de Gastos</title>
     </head>
     <body>
-        <h1>Gastos Diários</h1>
+        <div class="pagina-container">
+            <header class="header">
+                <nav class="nav">
+                    <ul class="nav__links">
+                        <li class="nav__item">
+                            <a class="nav__link" href="#section--1">Lançamento de gastos</a>
+                        </li>
+                        <li class="nav__item">
+                            <a class="nav__link" href="#section--2">Gastos fixos</a>
+                        </li>
+                        <li class="nav__item">
+                            <a class="nav__link" href="#section--3">Dashboard de finanças</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
 
-        <form id="filtros">
-            <label>
-                Mês:
-                <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
-            </label>
-            <label>
-                Ano:
-                <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
-            </label>
-            <label>
-                Início do período:
-                <input type="date" id="inicio" />
-            </label>
-            <label>
-                Fim do período:
-                <input type="date" id="fim" />
-            </label>
-            <label>
-                Categoria:
-                <input type="text" id="categoria" placeholder="Ex: Alimentação" />
-            </label>
-            <label>
-                Itens por página:
-                <input type="number" id="qtdPorPagina" min="1" value="5" />
-            </label>
-            <button type="button" id="buscar">Buscar</button>
-        </form>
+            <h1>Gastos Diários</h1>
 
-        <ul id="lista-gastos"></ul>
+            <form id="filtros">
+                <label>
+                    Mês:
+                    <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
+                </label>
+                <label>
+                    Ano:
+                    <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
+                </label>
+                <label>
+                    Início do período:
+                    <input type="date" id="inicio" />
+                </label>
+                <label>
+                    Fim do período:
+                    <input type="date" id="fim" />
+                </label>
+                <label>
+                    Categoria:
+                    <input type="text" id="categoria" placeholder="Ex: Alimentação" />
+                </label>
+                <label>
+                    Itens por página:
+                    <input type="number" id="qtdPorPagina" min="1" value="5" />
+                </label>
+                <button type="button" id="buscar">Buscar</button>
+            </form>
+
+            <ul id="lista-gastos"></ul>
+        </div>
 
         <div class="paginacao" id="paginacao">
             <button id="anterior">Anterior</button>
