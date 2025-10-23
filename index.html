@@ -8,23 +8,23 @@
         <title>Controle de Gastos</title>
     </head>
     <body>
-        <div class="pagina-container">
-            <header class="header">
-                <nav class="nav">
-                    <ul class="nav__links">
-                        <li class="nav__item">
-                            <a class="nav__link" href="#section--1">Lançamento de gastos</a>
-                        </li>
-                        <li class="nav__item">
-                            <a class="nav__link" href="#section--2">Gastos fixos</a>
-                        </li>
-                        <li class="nav__item">
-                            <a class="nav__link" href="#section--3">Dashboard de finanças</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
+        <header class="header">
+            <nav class="nav">
+                <ul class="nav__links">
+                    <li class="nav__item">
+                        <a class="nav__link btn--show-cadastro--lancamentos" href="#">Lançamento de gastos</a>
+                    </li>
+                    <li class="nav__item">
+                        <a class="nav__link" href="#">Gastos fixos</a>
+                    </li>
+                    <li class="nav__item">
+                        <a class="nav__link" href="#">Dashboard de finanças</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
 
+        <div class="pagina__container">
             <h1>Gastos Diários</h1>
 
             <form id="filtros">
@@ -50,20 +50,37 @@
                 </label>
                 <label>
                     Itens por página:
-                    <input type="number" id="qtdPorPagina" min="1" value="5" />
+                    <input type="number" id="qtdPorPagina" min="1" value="10" />
                 </label>
                 <button type="button" id="buscar">Buscar</button>
             </form>
 
             <ul id="lista-gastos"></ul>
+
+            <div class="paginacao" id="paginacao">
+                <button id="anterior">Anterior</button>
+                <span id="pagina-info">Página 1</span>
+                <select id="pagina-select"></select>
+                <button id="proximo">Próxima</button>
+            </div>
         </div>
 
-        <div class="paginacao" id="paginacao">
-            <button id="anterior">Anterior</button>
-            <span id="pagina-info">Página 1</span>
-            <select id="pagina-select"></select>
-            <button id="proximo">Próxima</button>
+        <div class="modal hidden">
+            <button class="btn--close-modal">&times;</button>
+            <h2 class="modal__header">Cadastra novo gasto</h2>
+            <form class="modal__form">
+                <label>Data do lancamento</label>
+                <input type="text" />
+                <label>valor gasto</label>
+                <input type="number" />
+                <label>observacao</label>
+                <input type="text" />
+                <label for="categoriaId">Categoria</label>
+                <select id="categoriaId" name="categoriaId"></select>
+                <button type="button" class="btn btn--cadastar-gasto">Cadastrar &rarr;</button>
+            </form>
         </div>
+        <div class="overlay hidden"></div>
         <script src="script.js"></script>
     </body>
 </html>

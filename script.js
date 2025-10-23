@@ -1,10 +1,20 @@
+"use strict";
+
+const modal = document.querySelector(".modal");
+const modalForm = document.querySelector(".modal__form");
+const overlay = document.querySelector(".overlay");
+const btnsOpenModal = document.querySelectorAll(".btn--show-cadastro--lancamentos");
+const btnsCloseModal = document.querySelectorAll(".btn--close-modal");
+
 let paginaAtual = 1;
 let totalDePaginas = 1;
 
 async function carregarDados() {
     try {
-        const mes = document.getElementById("mes").value;
-        const ano = document.getElementById("ano").value;
+        const dataAtual = new Date();
+
+        const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
+        const ano = document.getElementById("ano").value || dataAtual.getFullYear();
         const inicio = document.getElementById("inicio").value;
         const fim = document.getElementById("fim").value;
         const categoria = document.getElementById("categoria").value;
@@ -22,14 +32,20 @@ async function carregarDados() {
         const url = `https://localhost:7280/ControleDeGastos/ObterGastosDiarios?${params.toString()}`;
 
         const resposta = await fetch(url);
+        const lista = document.getElementById("lista-gastos");
+        lista.innerHTML = "";
 
         if (!resposta.ok) {
-            throw new Error("Erro ao buscar dados: " + resposta.status);
+            lista.innerHTML = "<li>Nenhum gasto encontrado.</li>";
+            atualizarPaginacao(1, 1);
+            // Lê o corpo da resposta (pode ser JSON)
+            const erroJson = await resposta.json();
+
+            // Lança o erro com base no conteúdo retornado
+            throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
         }
 
         const dados = await resposta.json();
-        const lista = document.getElementById("lista-gastos");
-        lista.innerHTML = "";
 
         if (!dados.itens || dados.itens.length === 0) {
             lista.innerHTML = "<li>Nenhum gasto encontrado.</li>";
@@ -41,16 +57,53 @@ async function carregarDados() {
             const li = document.createElement("li");
             const data = new Date(item.dataDoLancamento).toLocaleDateString("pt-BR");
             li.innerHTML = `
-              <div><strong>Data:</strong> ${data}</div>
-              <div><strong>Valor:</strong> <span class="valor">R$ ${item.valorgasto.toFixed(2)}</span></div>
-              <div><strong>Categoria:</strong> <span class="categoria">${item.nomeCategoria}</span></div>
-              ${item.observacao ? `<div><strong>Observação:</strong> ${item.observacao}</div>` : ""}
+              <div class="Lancamentos">
+                <div><strong>Data:</strong> ${data}</div>
+                <div><strong>Valor:</strong> <span class="valor">R$ ${item.valorgasto.toFixed(2)}</span></div>
+                <div><strong>Categoria:</strong> <span class="categoria">${item.nomeCategoria}</span></div>
+                ${item.observacao ? `<div><strong>Observação:</strong> ${item.observacao}</div>` : ""}
+              </div>
             `;
             lista.appendChild(li);
         });
 
         atualizarPaginacao(dados.paginaAtual, dados.totalDePaginas);
     } catch (erro) {
+        alert(erro);
+        console.error(erro);
+    }
+}
+
+async function obterCategoriasdegastos() {
+    try {
+        const url = `https://localhost:7280/ControleDeGastos/ObterCategorias`;
+
+        const resposta = await fetch(url);
+
+        if (!resposta.ok) {
+            // Lê o corpo da resposta (pode ser JSON)
+            const erroJson = await resposta.json();
+
+            // Lança o erro com base no conteúdo retornado
+            throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
+        }
+
+        const categorias = await resposta.json();
+        const select = document.getElementById("categoriaId");
+
+        categorias.forEach((categoria) => {
+            // Ignora categorias deletadas (caso queira)
+            if (categoria.deletado === "*") return;
+
+            const option = document.createElement("option");
+            option.value = categoria.idCategoriaDeLancamentos;
+            option.textContent = categoria.nomeDaCategoria.toUpperCase();
+            select.appendChild(option);
+        });
+
+        modalForm;
+    } catch (error) {
+        alert(erro);
         console.error(erro);
     }
 }
@@ -99,6 +152,27 @@ document.getElementById("pagina-select").addEventListener("change", (e) => {
     paginaAtual = parseInt(e.target.value);
     carregarDados();
 });
+
+const openModal = function (e) {
+    e.preventDefault();
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+};
+
+const closeModal = function (e) {
+    e.preventDefault();
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+};
+
+btnsOpenModal.forEach((btn) =>
+    btn.addEventListener("click", (event) => {
+        openModal(event);
+        obterCategoriasdegastos(event);
+    })
+);
+
+btnsCloseModal.forEach((btn) => btn.addEventListener("click", closeModal));
 
 // Carrega automaticamente a primeira página
 carregarDados();
