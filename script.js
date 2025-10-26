@@ -5,6 +5,8 @@ const modalForm = document.querySelector(".modal__form");
 const overlay = document.querySelector(".overlay");
 const btnsOpenModal = document.querySelectorAll(".btn--show-cadastro--lancamentos");
 const btnsCloseModal = document.querySelectorAll(".btn--close-modal");
+const btnCadastrarGasto = document.querySelector(".btn--cadastar-gasto");
+const select = document.getElementById("categoriaId");
 
 let paginaAtual = 1;
 let totalDePaginas = 1;
@@ -76,6 +78,8 @@ async function carregarDados() {
 
 async function obterCategoriasdegastos() {
     try {
+        if (select.length > 0) return;
+
         const url = `https://localhost:7280/ControleDeGastos/ObterCategorias`;
 
         const resposta = await fetch(url);
@@ -89,7 +93,6 @@ async function obterCategoriasdegastos() {
         }
 
         const categorias = await resposta.json();
-        const select = document.getElementById("categoriaId");
 
         categorias.forEach((categoria) => {
             // Ignora categorias deletadas (caso queira)
@@ -103,7 +106,7 @@ async function obterCategoriasdegastos() {
 
         modalForm;
     } catch (error) {
-        alert(erro);
+        alert(error);
         console.error(erro);
     }
 }
@@ -127,6 +130,49 @@ function atualizarPaginacao(pagina, total) {
 
     document.getElementById("anterior").disabled = pagina <= 1;
     document.getElementById("proximo").disabled = pagina >= total;
+}
+
+async function registrarNovoGasto(e) {
+    try {
+        const dataDoLancamento = document.getElementById("dataDoLancamento");
+        const valorgasto = document.getElementById("valorgasto");
+        const observacao = document.getElementById("observacao");
+        const idCategoria = document.getElementById("categoriaId");
+
+        if (!dataDoLancamento.value) {
+            e.preventDefault();
+            dataDoLancamento.focus();
+            throw new Error("Data de lançamento é obrigatória.");
+        }
+
+        if (parseFloat(valorgasto.value) <= 0 || valorgasto.value === "") {
+            e.preventDefault();
+            valorgasto.focus();
+            throw new Error("O valor gasto deve ser maior que zero.");
+        }
+
+        document.querySelector(".btn--cadastar-gasto").disabled = true;
+
+        var response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify([
+                {
+                    dataDoLancamento: dataDoLancamento.value,
+                    valorgasto: valorgasto.value,
+                    observacao: observacao.value,
+                    categoriaId: idCategoria.value,
+                },
+            ]),
+        });
+        var texto = await response.text();
+        alert(texto);
+        document.querySelector(".btn--cadastar-gasto").disabled = false;
+    } catch (error) {
+        alert(error);
+    }
 }
 
 document.getElementById("buscar").addEventListener("click", () => {
@@ -155,6 +201,13 @@ document.getElementById("pagina-select").addEventListener("change", (e) => {
 
 const openModal = function (e) {
     e.preventDefault();
+    const hoje = new Date();
+    const yyyy = hoje.getFullYear();
+    const mm = String(hoje.getMonth() + 1).padStart(2, "0");
+    const dd = String(hoje.getDate()).padStart(2, "0");
+
+    document.getElementById("dataDoLancamento").value = `${yyyy}-${mm}-${dd}`;
+
     modal.classList.remove("hidden");
     overlay.classList.remove("hidden");
 };
@@ -173,6 +226,10 @@ btnsOpenModal.forEach((btn) =>
 );
 
 btnsCloseModal.forEach((btn) => btn.addEventListener("click", closeModal));
+
+overlay.addEventListener("click", closeModal);
+
+btnCadastrarGasto.addEventListener("click", registrarNovoGasto);
 
 // Carrega automaticamente a primeira página
 carregarDados();

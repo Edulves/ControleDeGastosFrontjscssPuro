@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet" />
+        <link rel="shortcut icon" href="icone5.ico" type="image/x-icon" />
         <link rel="stylesheet" href="style.css" />
         <title>Controle de Gastos</title>
     </head>
@@ -70,11 +71,11 @@
             <h2 class="modal__header">Cadastra novo gasto</h2>
             <form class="modal__form">
                 <label>Data do lancamento</label>
-                <input type="text" />
+                <input type="date" id="dataDoLancamento" />
                 <label>valor gasto</label>
-                <input type="number" />
+                <input type="number" id="valorgasto" placeholder="0,00" />
                 <label>observacao</label>
-                <input type="text" />
+                <input type="text" id="observacao" />
                 <label for="categoriaId">Categoria</label>
                 <select id="categoriaId" name="categoriaId"></select>
                 <button type="button" class="btn btn--cadastar-gasto">Cadastrar &rarr;</button>
