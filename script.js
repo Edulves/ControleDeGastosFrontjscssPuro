@@ -21,7 +21,7 @@ async function carregarDados() {
         const dataAtual = new Date();
 
         const periodoDeInicio = document.getElementById("periodoDeInicio").value;
-        const periodoDeFim = document.getElementById("periodoDeFim").value;
+        const periodoDeFim = document.getElementById("periodoDeFim").value || periodoDeInicio ? dataAtual.toISOString().split("T")[0] : false || "";
         const mes = document.getElementById("mes").value || periodoDeInicio ? "" : false || dataAtual.getMonth() + 1;
         const ano = document.getElementById("ano").value || periodoDeInicio ? "" : false || dataAtual.getFullYear();
         const categoria = document.getElementById("categoria").value;
@@ -177,10 +177,8 @@ async function registrarNovoGasto(e) {
         });
         var texto = await response.text();
         alert(texto);
-        dataDoLancamento.innerText = "";
-        valorgasto.innerText = "";
-        observacao.innerText = "";
-        dataDoLancamento.innerText = "";
+        lancamentosValorgasto.value = "";
+        lancamentosObservacao.value = "";
         document.querySelector(".btn--cadastar-gasto").disabled = false;
     } catch (error) {
         alert(error);
