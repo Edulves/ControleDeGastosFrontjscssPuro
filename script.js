@@ -7,6 +7,11 @@ const btnsOpenModal = document.querySelectorAll(".btn--show-cadastro--lancamento
 const btnsCloseModal = document.querySelectorAll(".btn--close-modal");
 const btnCadastrarGasto = document.querySelector(".btn--cadastar-gasto");
 const select = document.getElementById("categoriaId");
+const inputMes = document.getElementById("mes");
+const inputAno = document.getElementById("ano");
+const lancamentosDataDoLancamento = document.getElementById("dataDoLancamento");
+const lancamentosValorgasto = document.getElementById("valorgasto");
+const lancamentosObservacao = document.getElementById("observacao");
 
 let paginaAtual = 1;
 let totalDePaginas = 1;
@@ -15,18 +20,21 @@ async function carregarDados() {
     try {
         const dataAtual = new Date();
 
-        const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
-        const ano = document.getElementById("ano").value || dataAtual.getFullYear();
-        const inicio = document.getElementById("inicio").value;
-        const fim = document.getElementById("fim").value;
+        const periodoDeInicio = document.getElementById("periodoDeInicio").value;
+        const periodoDeFim = document.getElementById("periodoDeFim").value;
+        const mes = document.getElementById("mes").value || periodoDeInicio ? "" : false || dataAtual.getMonth() + 1;
+        const ano = document.getElementById("ano").value || periodoDeInicio ? "" : false || dataAtual.getFullYear();
         const categoria = document.getElementById("categoria").value;
         const qtdPorPagina = document.getElementById("qtdPorPagina").value;
+
+        inputMes.placeholder = `Ex: ${mes.toString().padStart(2, "0")}`;
+        inputAno.placeholder = `Ex: ${ano.toString().padStart(2, "0")}`;
 
         const params = new URLSearchParams();
         if (mes) params.append("Mes", mes);
         if (ano) params.append("Ano", ano);
-        if (inicio) params.append("InicioDoPeriodo", inicio);
-        if (fim) params.append("FimDoPeriodo", fim);
+        if (periodoDeInicio) params.append("InicioDoPeriodo", periodoDeInicio);
+        if (periodoDeFim) params.append("FimDoPeriodo", periodoDeFim);
         if (categoria) params.append("Categoria", categoria);
         params.append("Pagina", paginaAtual);
         params.append("QtdPorPagina", qtdPorPagina);
@@ -169,6 +177,10 @@ async function registrarNovoGasto(e) {
         });
         var texto = await response.text();
         alert(texto);
+        dataDoLancamento.innerText = "";
+        valorgasto.innerText = "";
+        observacao.innerText = "";
+        dataDoLancamento.innerText = "";
         document.querySelector(".btn--cadastar-gasto").disabled = false;
     } catch (error) {
         alert(error);
