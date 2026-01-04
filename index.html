@@ -70,16 +70,25 @@
             <button class="btn--close-modal">&times;</button>
             <h2 class="modal__header">Cadastra novo gasto</h2>
             <form class="modal__form">
-                <label>Data do lancamento</label>
-                <input type="date" id="dataDoLancamento" />
-                <label>valor gasto</label>
-                <input type="number" id="valorgasto" placeholder="0,00" />
-                <label>observacao</label>
-                <input type="text" id="observacao" />
-                <label for="categoriaId">Categoria</label>
-                <select id="categoriaId" name="categoriaId"></select>
-                <button type="button" class="btn btn--cadastar-gasto">Cadastrar &rarr;</button>
+                <div class="linha-de-gastos">
+                    <span>Data</span>
+                    <span>valor gasto</span>
+                    <span>observacao</span>
+                    <span>Categoria</span>
+                    <span></span>
+
+                    <input name="dataDoLancamento" type="date" class="dataDoLancamento" />
+                    <input name="valorgasto" type="number" class="valorgasto" placeholder="0,00" />
+                    <input name="observacao" type="text" class="observacao" />
+                    <select name="categoriaId" class="categoriaId"></select>
+                    <button class="btn--remover-gasto" id="button--1">-</button>
+                </div>
             </form>
+
+            <div>
+                <button type="button" class="btn btn--cadastrar-gasto">Cadastrar →</button>
+                <button type="button" class="btn btn--adicionar-gasto">Adicionar +</button>
+            </div>
         </div>
         <div class="overlay hidden"></div>
         <script src="script.js"></script>

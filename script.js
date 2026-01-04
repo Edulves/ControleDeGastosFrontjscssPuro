@@ -3,15 +3,17 @@
 const modal = document.querySelector(".modal");
 const modalForm = document.querySelector(".modal__form");
 const overlay = document.querySelector(".overlay");
-const btnsOpenModal = document.querySelectorAll(".btn--show-cadastro--lancamentos");
-const btnsCloseModal = document.querySelectorAll(".btn--close-modal");
-const btnCadastrarGasto = document.querySelector(".btn--cadastar-gasto");
-const select = document.getElementById("categoriaId");
+const btnsOpenModal = document.querySelector(".btn--show-cadastro--lancamentos");
+const btnsCloseModal = document.querySelector(".btn--close-modal");
+const btnCadastrarGasto = document.querySelector(".btn--cadastrar-gasto");
+const btnAdicionarLinhaDeGasto = document.querySelector(".btn--adicionar-gasto");
+const btnRemoverLinhaDeGasto = document.querySelector(".btn--remover-gasto");
 const inputMes = document.getElementById("mes");
 const inputAno = document.getElementById("ano");
 const lancamentosDataDoLancamento = document.getElementById("dataDoLancamento");
 const lancamentosValorgasto = document.getElementById("valorgasto");
 const lancamentosObservacao = document.getElementById("observacao");
+const selectInicial = document.querySelector(".categoriaId");
 
 let paginaAtual = 1;
 let totalDePaginas = 1;
@@ -84,10 +86,9 @@ async function carregarDados() {
     }
 }
 
+let categorias = [];
 async function obterCategoriasdegastos() {
     try {
-        if (select.length > 0) return;
-
         const url = `https://localhost:7280/ControleDeGastos/ObterCategorias`;
 
         const resposta = await fetch(url);
@@ -100,22 +101,28 @@ async function obterCategoriasdegastos() {
             throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
         }
 
-        const categorias = await resposta.json();
+        categorias = await resposta.json();
+
+        preencherSelectCategorias(selectInicial);
+    } catch (error) {
+        alert(error);
+        console.error(error);
+    }
+}
+
+function preencherSelectCategorias(select) {
+    try {
+        select.innerHTML = `<option value="">Selecione</option>`;
 
         categorias.forEach((categoria) => {
-            // Ignora categorias deletadas (caso queira)
-            if (categoria.deletado === "*") return;
-
             const option = document.createElement("option");
             option.value = categoria.idCategoriaDeLancamentos;
             option.textContent = categoria.nomeDaCategoria.toUpperCase();
             select.appendChild(option);
         });
-
-        modalForm;
     } catch (error) {
         alert(error);
-        console.error(erro);
+        console.error(error);
     }
 }
 
@@ -140,48 +147,83 @@ function atualizarPaginacao(pagina, total) {
     document.getElementById("proximo").disabled = pagina >= total;
 }
 
+let buttonId = 1;
+function adicionarNovaLinhaDeGastos() {
+    const novaLinha = document.createElement("div");
+    const ultimaLinha = document.querySelector(".modal__form").lastElementChild;
+    const dataUltimoLancamento = ultimaLinha.querySelector(".dataDoLancamento").value;
+    novaLinha.classList.add("linha-de-gastos");
+    buttonId++;
+
+    novaLinha.innerHTML = `
+    <input name="dataDoLancamento" type="date" class="dataDoLancamento" value="${dataUltimoLancamento}"/>
+    <input name="valorgasto" type="number" class="valorgasto" placeholder="0,00" />
+    <input name="observacao" type="text" class="observacao" />
+    <select name="categoriaId"  class="categoriaId"></select>
+    <button class="btn--remover-gasto" id="${"button--" + buttonId}">-</button>
+    `;
+
+    const select = novaLinha.querySelector(".categoriaId");
+    preencherSelectCategorias(select);
+
+    modalForm.appendChild(novaLinha);
+}
+
+function removerLinhaDeGastos(e) {
+    e.preventDefault();
+    const idButton = e.target.attributes.id.value;
+    const buttonRevomer = document.getElementById(idButton);
+    const divLancamentoARemover = buttonRevomer.closest(".linha-de-gastos");
+    divLancamentoARemover.remove();
+}
+
 async function registrarNovoGasto(e) {
     try {
-        const dataDoLancamento = document.getElementById("dataDoLancamento");
-        const valorgasto = document.getElementById("valorgasto");
-        const observacao = document.getElementById("observacao");
-        const idCategoria = document.getElementById("categoriaId");
+        const linhas = document.querySelectorAll(".linha-de-gastos");
+        const gastos = [];
 
-        if (!dataDoLancamento.value) {
-            e.preventDefault();
-            dataDoLancamento.focus();
-            throw new Error("Data de lançamento é obrigatória.");
-        }
+        linhas.forEach((linha, i) => {
+            const data = linha.querySelector(".dataDoLancamento").value;
+            const valor = linha.querySelector(".valorgasto").value;
+            const observacao = linha.querySelector(".observacao").value;
+            const categoriaId = linha.querySelector(".categoriaId").value;
 
-        if (parseFloat(valorgasto.value) <= 0 || valorgasto.value === "") {
-            e.preventDefault();
-            valorgasto.focus();
-            throw new Error("O valor gasto deve ser maior que zero.");
-        }
+            if (!data) {
+                throw new Error(`Data obrigatória na linha ${i + 1}`);
+            }
 
-        document.querySelector(".btn--cadastar-gasto").disabled = true;
+            if (!valor || parseFloat(valor) <= 0) {
+                throw new Error(`Valor de gasto inválido na linha ${i + 1}`);
+            }
 
-        var response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify([
-                {
-                    dataDoLancamento: dataDoLancamento.value,
-                    valorgasto: valorgasto.value,
-                    observacao: observacao.value,
-                    categoriaId: idCategoria.value,
-                },
-            ]),
+            gastos.push({
+                dataDoLancamento: data,
+                valorgasto: parseFloat(valor),
+                observacao,
+                categoriaId,
+            });
+
+            linha.querySelector(".valorgasto").value = "";
+            linha.querySelector(".observacao").value = "";
+            linha.querySelector(".categoriaId").value = "";
         });
-        var texto = await response.text();
-        alert(texto);
-        lancamentosValorgasto.value = "";
-        lancamentosObservacao.value = "";
-        document.querySelector(".btn--cadastar-gasto").disabled = false;
+
+        document.querySelector(".btn--cadastrar-gasto").disabled = true;
+
+        // const response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(gastos),
+        // });
+
+        // const texto = await response.text();
+        // alert(texto);
     } catch (error) {
-        alert(error);
+        alert(error.message);
+    } finally {
+        document.querySelector(".btn--cadastrar-gasto").disabled = false;
     }
 }
 
@@ -211,12 +253,6 @@ document.getElementById("pagina-select").addEventListener("change", (e) => {
 
 const openModal = function (e) {
     e.preventDefault();
-    const hoje = new Date();
-    const yyyy = hoje.getFullYear();
-    const mm = String(hoje.getMonth() + 1).padStart(2, "0");
-    const dd = String(hoje.getDate()).padStart(2, "0");
-
-    document.getElementById("dataDoLancamento").value = `${yyyy}-${mm}-${dd}`;
 
     modal.classList.remove("hidden");
     overlay.classList.remove("hidden");
@@ -228,18 +264,24 @@ const closeModal = function (e) {
     overlay.classList.add("hidden");
 };
 
-btnsOpenModal.forEach((btn) =>
-    btn.addEventListener("click", (event) => {
-        openModal(event);
-        obterCategoriasdegastos(event);
-    })
-);
+btnsOpenModal.addEventListener("click", (event) => {
+    obterCategoriasdegastos(event);
+    openModal(event);
+});
 
-btnsCloseModal.forEach((btn) => btn.addEventListener("click", closeModal));
+btnsCloseModal.addEventListener("click", closeModal);
 
 overlay.addEventListener("click", closeModal);
 
 btnCadastrarGasto.addEventListener("click", registrarNovoGasto);
+
+btnAdicionarLinhaDeGasto.addEventListener("click", adicionarNovaLinhaDeGastos);
+
+modalForm.addEventListener("click", function (e) {
+    if (e.target.matches('button[id^="button--"]')) {
+        removerLinhaDeGastos(e);
+    }
+});
 
 // Carrega automaticamente a primeira página
 carregarDados();
