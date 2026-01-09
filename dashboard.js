@@ -82,7 +82,7 @@ async function getDadosDashPequeno() {
         console.log(dadosDash.listaDeGastosPorDia);
         const labels = dadosDash.listaDeGastosPorDia.map((item) => new Date(item.dataLancamento).getDate());
         const dataSet = dadosDash.listaDeGastosPorDia.map((item) => item.valorPorDia);
-        const percent = dadosDash.listaDeGastosPorDia.map((item) => item.valorPorDia / totalMes);
+        const percent = dadosDash.listaDeGastosPorDia.map((item) => `rgb(223, 4, 6, ${item.valorPorDia / totalMes + 0.45}`);
 
         createDayChart("gastos diarios", labels, dataSet, percent);
         console.log(percent);
@@ -154,7 +154,7 @@ function createMainChart(title, labels, dataSet) {
 }
 
 let dayChart = null;
-function createDayChart(title, labels, dataSet, colorPercent) {
+function createDayChart(title, labels, dataSet, colors) {
     // Destroy previous chart if it exists
     if (dayChart) {
         dayChart.destroy();
@@ -168,7 +168,7 @@ function createDayChart(title, labels, dataSet, colorPercent) {
                 {
                     label: title,
                     data: dataSet,
-                    backgroundColor: [`rgb(223, 4, 6, ${colorPercent})`],
+                    backgroundColor: colors,
                     borderWidth: 1,
                 },
             ],
