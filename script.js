@@ -3,7 +3,6 @@
 const modal = document.querySelector(".modal");
 const modalForm = document.querySelector(".modal__form");
 const overlay = document.querySelector(".overlay");
-const btnsOpenModal = document.querySelector(".btn--show-cadastro--lancamentos");
 const btnsCloseModal = document.querySelector(".btn--close-modal");
 const btnCadastrarGasto = document.querySelector(".btn--cadastrar-gasto");
 const btnAdicionarLinhaDeGasto = document.querySelector(".btn--adicionar-gasto");
@@ -14,9 +13,13 @@ const lancamentosDataDoLancamento = document.getElementById("dataDoLancamento");
 const lancamentosValorgasto = document.getElementById("valorgasto");
 const lancamentosObservacao = document.getElementById("observacao");
 const selectInicial = document.querySelector(".categoriaId");
+const btnLancardespesas = document.getElementById("lancardespesa");
 
 let paginaAtual = 1;
 let totalDePaginas = 1;
+
+// Carrega automaticamente a primeira página
+carregarDados();
 
 async function carregarDados() {
     try {
@@ -91,17 +94,17 @@ async function obterCategoriasdegastos() {
     try {
         const url = `https://localhost:7280/ControleDeGastos/ObterCategorias`;
 
-        const resposta = await fetch(url);
+        const response = await fetch(url);
 
-        if (!resposta.ok) {
+        if (!response.ok) {
             // Lê o corpo da resposta (pode ser JSON)
-            const erroJson = await resposta.json();
+            const erroJson = await response.json();
 
             // Lança o erro com base no conteúdo retornado
             throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
         }
 
-        categorias = await resposta.json();
+        categorias = await response.json();
 
         preencherSelectCategorias(selectInicial);
     } catch (error) {
@@ -171,7 +174,10 @@ function adicionarNovaLinhaDeGastos() {
 
 function removerLinhaDeGastos(e) {
     e.preventDefault();
+
     const idButton = e.target.attributes.id.value;
+    if (idButton === "button--1") return;
+
     const buttonRevomer = document.getElementById(idButton);
     const divLancamentoARemover = buttonRevomer.closest(".linha-de-gastos");
     divLancamentoARemover.remove();
@@ -210,16 +216,16 @@ async function registrarNovoGasto(e) {
 
         document.querySelector(".btn--cadastrar-gasto").disabled = true;
 
-        // const response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(gastos),
-        // });
+        const response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(gastos),
+        });
 
-        // const texto = await response.text();
-        // alert(texto);
+        const texto = await response.text();
+        alert(texto);
     } catch (error) {
         alert(error.message);
     } finally {
@@ -264,7 +270,7 @@ const closeModal = function (e) {
     overlay.classList.add("hidden");
 };
 
-btnsOpenModal.addEventListener("click", (event) => {
+btnLancardespesas.addEventListener("click", (event) => {
     obterCategoriasdegastos(event);
     openModal(event);
 });
@@ -282,6 +288,3 @@ modalForm.addEventListener("click", function (e) {
         removerLinhaDeGastos(e);
     }
 });
-
-// Carrega automaticamente a primeira página
-carregarDados();
