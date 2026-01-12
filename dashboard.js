@@ -79,13 +79,11 @@ async function getDadosDashPequeno() {
         dadosDash = await response.json();
 
         const totalMes = Number(dadosDash.total);
-        console.log(dadosDash.listaDeGastosPorDia);
         const labels = dadosDash.listaDeGastosPorDia.map((item) => new Date(item.dataLancamento).getDate());
         const dataSet = dadosDash.listaDeGastosPorDia.map((item) => item.valorPorDia);
         const percent = dadosDash.listaDeGastosPorDia.map((item) => `rgb(223, 4, 6, ${item.valorPorDia / totalMes + 0.45}`);
 
         createDayChart("gastos diarios", labels, dataSet, percent);
-        console.log(percent);
     } catch (error) {
         alert(error.message);
     }
@@ -96,7 +94,12 @@ let mainChart = null;
 function createMainChart(title, labels, dataSet) {
     // Destroy previous chart if it exists
     if (mainChart) {
-        mainChart.destroy();
+        // 🔄 atualiza com animação
+        mainChart.data.labels = labels;
+        mainChart.data.datasets[0].data = dataSet;
+
+        mainChart.update(); // 👈 anima aqui
+        return;
     }
 
     mainChart = new Chart(ctxMainChart, {
@@ -115,6 +118,10 @@ function createMainChart(title, labels, dataSet) {
         options: {
             indexAxis: "y",
             responsive: true,
+            animation: {
+                duration: 1000, // ms
+                easing: "easeOutQuart",
+            },
             plugins: {
                 legend: {
                     display: false,
@@ -135,18 +142,6 @@ function createMainChart(title, labels, dataSet) {
                     grid: {
                         display: false,
                     },
-                    title: {
-                        display: true,
-                        text: "Gastos por categoria",
-                        font: {
-                            size: 26,
-                        },
-                    },
-                    ticks: {
-                        callback: function (value) {
-                            return this.getLabelForValue(value).split(" ");
-                        },
-                    },
                 },
             },
         },
@@ -157,7 +152,13 @@ let dayChart = null;
 function createDayChart(title, labels, dataSet, colors) {
     // Destroy previous chart if it exists
     if (dayChart) {
-        dayChart.destroy();
+        // 🔄 atualiza com animação
+        dayChart.data.labels = labels;
+        dayChart.data.datasets[0].data = dataSet;
+        dayChart.data.datasets[0].backgroundColor = colors;
+
+        dayChart.update(); // 👈 anima aqui
+        return;
     }
 
     dayChart = new Chart(ctxDayChart, {
@@ -177,6 +178,10 @@ function createDayChart(title, labels, dataSet, colors) {
             maintainAspectRatio: false,
             indexAxis: "y",
             responsive: true,
+            animation: {
+                duration: 1000, // ms
+                easing: "easeOutQuart",
+            },
             plugins: {
                 legend: {
                     display: false,
