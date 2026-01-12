@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet" />
+        <link rel="shortcut icon" href="icone5.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Controle de Gastos</title>
+    </head>
+    <body>
+        <div id="header"></div>
+
+        <div class="pagina__container">
+            <h1>Gastos Fixos</h1>
+
+            <form id="filtros">
+                <label>
+                    Mês:
+                    <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
+                </label>
+                <label>
+                    Ano:
+                    <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
+                </label>
+                <button type="button" id="buscar">Buscar</button>
+            </form>
+
+            <ul id="lista-gastos-fixos"></ul>
+        </div>
+        <script src="loadComponents.js"></script>
+        <script src="gastosFixos.js"></script>
+    </body>
+</html>
