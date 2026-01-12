@@ -25,10 +25,14 @@ async function carregarDados() {
     try {
         const dataAtual = new Date();
 
+        const mesx = document.getElementById("mes").value || dataAtual.getMonth() + 1;
+
+        console.log(mesx);
+
         const periodoDeInicio = document.getElementById("periodoDeInicio").value;
-        const periodoDeFim = document.getElementById("periodoDeFim").value || periodoDeInicio ? dataAtual.toISOString().split("T")[0] : false || "";
-        const mes = document.getElementById("mes").value || periodoDeInicio ? "" : false || dataAtual.getMonth() + 1;
-        const ano = document.getElementById("ano").value || periodoDeInicio ? "" : false || dataAtual.getFullYear();
+        const periodoDeFim = document.getElementById("periodoDeFim").value || periodoDeInicio ? dataAtual.toISOString().split("T")[0] : "";
+        const mes = periodoDeInicio ? "" : document.getElementById("mes").value || dataAtual.getMonth() + 1;
+        const ano = periodoDeInicio ? "" : document.getElementById("ano").value || dataAtual.getFullYear();
         const categoria = document.getElementById("categoria").value;
         const qtdPorPagina = document.getElementById("qtdPorPagina").value;
 
