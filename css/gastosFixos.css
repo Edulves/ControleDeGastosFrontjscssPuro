@@ -1,0 +1,58 @@
+#gastos-fixos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.gastos-fixos-totais {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.card-gasto-fixo {
+    background-color: white;
+    padding: 10px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-gasto-fixo--totais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 4px;
+    font-size: 40px;
+    font-family: "Play", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    gap: 10px;
+}
+
+#filtros-gastos-fixos {
+    border-radius: 4px;
+}
+
+.img-gastos-fixos-totais {
+    display: flex;
+    align-items: center;
+}
+
+.img-gastos-fixos-totais img {
+    height: 100px;
+}
+
+.img-cards-gastos-fixos {
+    height: auto;
+    width: 50px;
+}
+
+.img-gastos-fixos {
+    display: flex;
+    align-items: flex-end;
+}

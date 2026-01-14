@@ -4,8 +4,13 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet" />
-        <link rel="shortcut icon" href="icone5.ico" type="image/x-icon" />
-        <link rel="stylesheet" href="style.css" />
+        <link rel="shortcut icon" href="/icons/icone5.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/gastosFixos.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
         <title>Controle de Gastos</title>
     </head>
     <body>
@@ -14,7 +19,7 @@
         <div class="pagina__container">
             <h1>Gastos Fixos</h1>
 
-            <form id="filtros">
+            <form id="filtros-gastos-fixos">
                 <label>
                     Mês:
                     <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
@@ -26,9 +31,11 @@
                 <button type="button" id="buscar">Buscar</button>
             </form>
 
-            <ul id="lista-gastos-fixos"></ul>
+            <div class="gastos-fixos-totais"></div>
+
+            <div id="gastos-fixos"></div>
         </div>
-        <script src="loadComponents.js"></script>
-        <script src="gastosFixos.js"></script>
+        <script src="/js/loadComponents.js"></script>
+        <script src="/js/gastosFixos.js"></script>
     </body>
 </html>

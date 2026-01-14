@@ -89,7 +89,6 @@ async function getDadosDashPequeno() {
     }
 }
 
-let delayed;
 let mainChart = null;
 function createMainChart(title, labels, dataSet) {
     // Destroy previous chart if it exists
