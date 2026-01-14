@@ -4,29 +4,32 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet" />
-        <link rel="shortcut icon" href="icone5.ico" type="image/x-icon" />
-        <link rel="stylesheet" href="style.css" />
+        <link rel="shortcut icon" href="/icons/icone5.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/dashboard.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
         <title>Controle de Gastos</title>
     </head>
     <body>
         <div id="header"></div>
         <div class="pagina__container">
-            <h1>Dashboard</h1>
-            <form id="filtros">
+            <form id="filtros-dash">
                 <label>
-                    Mês:
+                    <span>Mês:</span>
                     <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
                 </label>
                 <label>
-                    Ano:
+                    <span>Ano:</span>
                     <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
                 </label>
                 <button type="button" id="buscar">Buscar</button>
             </form>
             <div class="chartArea">
+                <span class="title-charts title-main-chart">Despesas por categoria</span>
                 <div class="chartMain">
                     <canvas id="mainChart"></canvas>
                 </div>
+                <span class="title-charts title-day-chart">Despesas diarias</span>
                 <div class="chartDay">
                     <canvas id="exDayChart"></canvas>
                 </div>
@@ -34,6 +37,6 @@
         </div>
     </body>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="dashboard.js"></script>
-    <script src="loadComponents.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/loadComponents.js"></script>
 </html>
