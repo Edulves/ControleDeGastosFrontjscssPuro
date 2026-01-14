@@ -1,0 +1,51 @@
+.chartArea {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 2;
+    column-gap: 10px;
+    max-height: 600px;
+}
+
+.chartMain {
+    background-color: #fefefe;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    grid-area: 2 / 1 / span 2 / span 3;
+    padding: 15px;
+}
+
+.chartDay {
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    grid-area: 2 / 4 / span 2 / span 4;
+
+    height: auto;
+    padding: 15px;
+}
+
+#filtros-dash {
+    border-radius: 0px;
+    justify-content: flex-start;
+    background-color: rgb(7, 7, 7, 0);
+    box-shadow: none;
+}
+
+#filtros-dash label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.title-charts {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 24px;
+}
+
+.title-main-chart {
+    grid-area: 1 / 1 / span 1 / span 3;
+}
+
+.title-day-chart {
+    grid-area: 1 / 4 / span 1 / span 4;
+}

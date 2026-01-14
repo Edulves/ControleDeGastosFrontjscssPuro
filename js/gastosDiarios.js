@@ -1,19 +1,22 @@
 "use strict";
 
-const modal = document.querySelector(".modal");
-const modalForm = document.querySelector(".modal__form");
-const overlay = document.querySelector(".overlay");
-const btnsCloseModal = document.querySelector(".btn--close-modal");
-const btnCadastrarGasto = document.querySelector(".btn--cadastrar-gasto");
-const btnAdicionarLinhaDeGasto = document.querySelector(".btn--adicionar-gasto");
-const btnRemoverLinhaDeGasto = document.querySelector(".btn--remover-gasto");
+const btnsCloseModal = document.querySelector(".btn--close-lancamentos_diarios");
+const btnCadastrarGasto = document.querySelector(".btn--cadastrar-lancamentos_diarios");
+const btnAdicionarLinhaDeGasto = document.querySelector(".btn--adicionar-lancamentos_diarios");
+const btnLancardespesas = document.getElementById("lancardespesa");
+const btnBuscar = document.getElementById("buscar");
+const btnPaginaAnterior = document.getElementById("anterior");
+const btnProximaPagina = document.getElementById("proximo");
 const inputMes = document.getElementById("mes");
 const inputAno = document.getElementById("ano");
 const lancamentosDataDoLancamento = document.getElementById("dataDoLancamento");
 const lancamentosValorgasto = document.getElementById("valorgasto");
 const lancamentosObservacao = document.getElementById("observacao");
+const modal = document.querySelector(".modal");
+const formLancamentosDiarios = document.querySelector(".form_lancamentos_diarios");
+const overlay = document.querySelector(".overlay");
 const selectInicial = document.querySelector(".categoriaId");
-const btnLancardespesas = document.getElementById("lancardespesa");
+const selectPagina = document.getElementById("pagina-select");
 
 let paginaAtual = 1;
 let totalDePaginas = 1;
@@ -24,10 +27,6 @@ carregarDados();
 async function carregarDados() {
     try {
         const dataAtual = new Date();
-
-        const periodoDeFimx = document.getElementById("periodoDeFim").value;
-
-        console.log(periodoDeFimx);
 
         const periodoDeInicio = document.getElementById("periodoDeInicio").value;
         const periodoDeFim = document.getElementById("periodoDeFim").value || (!periodoDeInicio ? "" : dataAtual.toISOString().split("T")[0]);
@@ -51,7 +50,7 @@ async function carregarDados() {
         const url = `https://localhost:7280/ControleDeGastos/ObterGastosDiarios?${params.toString()}`;
 
         const resposta = await fetch(url);
-        const lista = document.getElementById("lista-gastos");
+        const lista = document.querySelector(".lista-gastos");
         lista.innerHTML = "";
 
         if (!resposta.ok) {
@@ -76,10 +75,10 @@ async function carregarDados() {
             const li = document.createElement("li");
             const data = new Date(item.dataDoLancamento).toLocaleDateString("pt-BR");
             li.innerHTML = `
-              <div class="Lancamentos">
+              <div class="lancamentos">
                 <div><strong>Data:</strong> ${data}</div>
-                <div><strong>Valor:</strong> <span class="valor">R$ ${item.valorgasto.toFixed(2)}</span></div>
-                <div><strong>Categoria:</strong> <span class="categoria">${item.nomeCategoria}</span></div>
+                <div><strong>Valor:</strong> <span class="valores">R$ ${item.valorgasto.toFixed(2)}</span></div>
+                <div><strong>Categoria:</strong> <span class="categoria_Lancamento-Diario">${item.nomeCategoria}</span></div>
                 ${item.observacao ? `<div><strong>Observação:</strong> ${item.observacao}</div>` : ""}
               </div>
             `;
@@ -114,6 +113,66 @@ async function obterCategoriasdegastos() {
     } catch (error) {
         alert(error);
         console.error(error);
+    }
+}
+
+async function registrarNovoGasto(e) {
+    try {
+        const linhas = document.querySelectorAll(".linhas_lancamentos_diarios");
+        const gastos = [];
+
+        if (linhas.length <= 0) {
+            throw new Error("Nenhuma linha preenchida");
+        }
+
+        linhas.forEach((linha, i) => {
+            const data = linha.querySelector(".dataDoLancamento").value;
+            const valor = linha.querySelector(".valorgasto").value;
+            const observacao = linha.querySelector(".observacao").value;
+            const categoriaId = linha.querySelector(".categoriaId").value;
+
+            if (!categoriaId) throw new Error(`Categoria obrigatória na linha ${i + 1}`);
+
+            if (!data) throw new Error(`Data obrigatória na linha ${i + 1}`);
+
+            if (!valor || parseFloat(valor) <= 0) throw new Error(`Valor de gasto inválido na linha ${i + 1}`);
+
+            gastos.push({
+                dataDoLancamento: data,
+                valorgasto: parseFloat(valor),
+                observacao,
+                categoriaId,
+            });
+
+            linha.querySelector(".valorgasto").value = "";
+            linha.querySelector(".observacao").value = "";
+            linha.querySelector(".categoriaId").value = "";
+        });
+
+        document.querySelector(".btn--cadastrar-lancamentos_diarios").disabled = true;
+
+        const response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(gastos),
+        });
+
+        if (!response.ok) {
+            // Lê o corpo da resposta (pode ser JSON)
+            const erroJson = await response.json();
+
+            // Lança o erro com base no conteúdo retornado
+            throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
+        }
+
+        const texto = await response.text();
+        alert(texto);
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        document.querySelector(".btn--cadastrar-lancamentos_diarios").disabled = false;
     }
 }
 
@@ -157,23 +216,23 @@ function atualizarPaginacao(pagina, total) {
 let buttonId = 1;
 function adicionarNovaLinhaDeGastos() {
     const novaLinha = document.createElement("div");
-    const ultimaLinha = document.querySelector(".modal__form").lastElementChild;
+    const ultimaLinha = document.querySelector(".form_lancamentos_diarios").lastElementChild;
     const dataUltimoLancamento = ultimaLinha.querySelector(".dataDoLancamento").value;
-    novaLinha.classList.add("linha-de-gastos");
+    novaLinha.classList.add("linhas_lancamentos_diarios");
     buttonId++;
 
     novaLinha.innerHTML = `
     <input name="dataDoLancamento" type="date" class="dataDoLancamento" value="${dataUltimoLancamento}"/>
-    <input name="valorgasto" type="number" class="valorgasto" placeholder="0,00" />
+    <input name="valorgasto" type="number" class="valorgasto_lancamentos_diarios" placeholder="0,00" />
     <input name="observacao" type="text" class="observacao" />
     <select name="categoriaId"  class="categoriaId"></select>
-    <button class="btn--remover-gasto" id="${"button--" + buttonId}">-</button>
+    <button type="button" class="btn--remover-lancamentos_diarios" id="${"button--" + buttonId}">-</button>
     `;
 
     const select = novaLinha.querySelector(".categoriaId");
     preencherSelectCategorias(select);
 
-    modalForm.appendChild(novaLinha);
+    formLancamentosDiarios.appendChild(novaLinha);
 }
 
 function removerLinhaDeGastos(e) {
@@ -183,83 +242,9 @@ function removerLinhaDeGastos(e) {
     if (idButton === "button--1") return;
 
     const buttonRevomer = document.getElementById(idButton);
-    const divLancamentoARemover = buttonRevomer.closest(".linha-de-gastos");
+    const divLancamentoARemover = buttonRevomer.closest(".linhas_lancamentos_diarios");
     divLancamentoARemover.remove();
 }
-
-async function registrarNovoGasto(e) {
-    try {
-        const linhas = document.querySelectorAll(".linha-de-gastos");
-        const gastos = [];
-
-        linhas.forEach((linha, i) => {
-            const data = linha.querySelector(".dataDoLancamento").value;
-            const valor = linha.querySelector(".valorgasto").value;
-            const observacao = linha.querySelector(".observacao").value;
-            const categoriaId = linha.querySelector(".categoriaId").value;
-
-            if (!data) {
-                throw new Error(`Data obrigatória na linha ${i + 1}`);
-            }
-
-            if (!valor || parseFloat(valor) <= 0) {
-                throw new Error(`Valor de gasto inválido na linha ${i + 1}`);
-            }
-
-            gastos.push({
-                dataDoLancamento: data,
-                valorgasto: parseFloat(valor),
-                observacao,
-                categoriaId,
-            });
-
-            linha.querySelector(".valorgasto").value = "";
-            linha.querySelector(".observacao").value = "";
-            linha.querySelector(".categoriaId").value = "";
-        });
-
-        document.querySelector(".btn--cadastrar-gasto").disabled = true;
-
-        const response = await fetch("https://localhost:7280/ControleDeGastos/CriarLancamentosDeGastosDiario", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(gastos),
-        });
-
-        const texto = await response.text();
-        alert(texto);
-    } catch (error) {
-        alert(error.message);
-    } finally {
-        document.querySelector(".btn--cadastrar-gasto").disabled = false;
-    }
-}
-
-document.getElementById("buscar").addEventListener("click", () => {
-    paginaAtual = 1;
-    carregarDados();
-});
-
-document.getElementById("anterior").addEventListener("click", () => {
-    if (paginaAtual > 1) {
-        paginaAtual--;
-        carregarDados();
-    }
-});
-
-document.getElementById("proximo").addEventListener("click", () => {
-    if (paginaAtual < totalDePaginas) {
-        paginaAtual++;
-        carregarDados();
-    }
-});
-
-document.getElementById("pagina-select").addEventListener("change", (e) => {
-    paginaAtual = parseInt(e.target.value);
-    carregarDados();
-});
 
 const openModal = function (e) {
     e.preventDefault();
@@ -274,6 +259,25 @@ const closeModal = function (e) {
     overlay.classList.add("hidden");
 };
 
+btnBuscar.addEventListener("click", () => {
+    paginaAtual = 1;
+    carregarDados();
+});
+
+btnPaginaAnterior.addEventListener("click", () => {
+    if (paginaAtual > 1) {
+        paginaAtual--;
+        carregarDados();
+    }
+});
+
+btnProximaPagina.addEventListener("click", () => {
+    if (paginaAtual < totalDePaginas) {
+        paginaAtual++;
+        carregarDados();
+    }
+});
+
 btnLancardespesas.addEventListener("click", (event) => {
     obterCategoriasdegastos(event);
     openModal(event);
@@ -281,14 +285,19 @@ btnLancardespesas.addEventListener("click", (event) => {
 
 btnsCloseModal.addEventListener("click", closeModal);
 
-overlay.addEventListener("click", closeModal);
-
 btnCadastrarGasto.addEventListener("click", registrarNovoGasto);
 
 btnAdicionarLinhaDeGasto.addEventListener("click", adicionarNovaLinhaDeGastos);
 
-modalForm.addEventListener("click", function (e) {
-    if (e.target.matches('button[id^="button--"]')) {
+selectPagina.addEventListener("change", (e) => {
+    paginaAtual = parseInt(e.target.value);
+    carregarDados();
+});
+
+overlay.addEventListener("click", closeModal);
+
+formLancamentosDiarios.addEventListener("click", function (e) {
+    if (e.target.matches("button.btn--remover-lancamentos_diarios")) {
         removerLinhaDeGastos(e);
     }
 });

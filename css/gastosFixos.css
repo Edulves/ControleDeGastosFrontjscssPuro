@@ -1,4 +1,4 @@
-#gastos-fixos {
+.gastos-fixos {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
@@ -34,7 +34,7 @@
     gap: 10px;
 }
 
-#filtros-gastos-fixos {
+.filtros-gastos-fixos {
     border-radius: 4px;
 }
 

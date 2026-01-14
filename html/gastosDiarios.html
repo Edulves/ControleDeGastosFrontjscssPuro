@@ -15,9 +15,9 @@
         <div id="header"></div>
 
         <div class="pagina__container">
-            <h1>Gastos Diários</h1>
+            <h1>Despesas Diárias</h1>
 
-            <form id="filtros">
+            <form class="filtros">
                 <label>
                     Mês:
                     <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
@@ -42,12 +42,12 @@
                     Itens por página:
                     <input type="number" id="qtdPorPagina" min="1" value="10" />
                 </label>
-                <button type="button" id="buscar">Buscar</button>
+                <button type="button" id="buscar"><i class="bi bi-search"></i></button>
             </form>
 
-            <ul id="lista-gastos"></ul>
+            <ul class="lista-gastos"></ul>
 
-            <div id="rodaPe">
+            <div>
                 <div class="paginacao" id="paginacao">
                     <button id="anterior">Anterior</button>
                     <span id="pagina-info">Página 1</span>
@@ -60,27 +60,26 @@
         </div>
 
         <div class="modal hidden">
-            <button class="btn--close-modal">&times;</button>
-            <h2 class="modal__header">Cadastra novo gasto</h2>
-            <form class="modal__form">
-                <div class="linha-de-gastos">
+            <button class="btn--close-lancamentos_diarios">&times;</button>
+            <h2 class="modal_lancamentos_diarios_header">Cadastra novo gasto</h2>
+            <form class="form_lancamentos_diarios">
+                <div class="linhas_lancamentos_diarios">
                     <span>Data</span>
                     <span>valor gasto</span>
                     <span>observacao</span>
                     <span>Categoria</span>
                     <span></span>
-
                     <input name="dataDoLancamento" type="date" class="dataDoLancamento" />
-                    <input name="valorgasto" type="number" class="valorgasto" placeholder="0,00" />
+                    <input name="valorgasto" type="number" class="valorgasto_lancamentos_diarios" placeholder="0,00" />
                     <input name="observacao" type="text" class="observacao" />
                     <select name="categoriaId" class="categoriaId"></select>
-                    <button class="btn--remover-gasto" id="button--1">-</button>
+                    <button type="button" class="btn--remover-lancamentos_diarios" id="button--1">-</button>
                 </div>
             </form>
 
             <div>
-                <button type="button" class="btn btn--cadastrar-gasto">Cadastrar →</button>
-                <button type="button" class="btn btn--adicionar-gasto">Adicionar +</button>
+                <button type="button" class="btn btn--cadastrar-lancamentos_diarios">Cadastrar →</button>
+                <button type="button" class="btn btn--adicionar-lancamentos_diarios">Adicionar +</button>
             </div>
         </div>
         <div class="overlay hidden"></div>

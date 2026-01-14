@@ -6,7 +6,7 @@ const inputAno = document.getElementById("ano");
 
 async function buscarGastosFixos() {
     try {
-        const listaGatos = document.getElementById("gastos-fixos");
+        const listaGatos = document.querySelector(".gastos-fixos");
 
         const dataAtual = new Date();
         const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
