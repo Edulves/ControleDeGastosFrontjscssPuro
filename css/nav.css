@@ -1,0 +1,44 @@
+.nav {
+    width: 60px;
+    height: 100vh;
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 0 0 10px 10px;
+    font-size: 25px;
+    font-weight: 900;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.nav:hover {
+    width: 400px;
+    transition: 0.5s ease;
+}
+
+.icon-nav {
+    color: #007bff;
+}
+
+.nav__item {
+    display: flex;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 0;
+    transition: 0.5s ease;
+    gap: 20px;
+    padding: 20px 0 20px 20px;
+    min-width: 400px;
+}
+
+.nav__item:hover {
+    color: var(--color-secondary);
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: 0.5s;
+}
+
+.nav__link {
+    text-decoration: none;
+    color: inherit;
+}

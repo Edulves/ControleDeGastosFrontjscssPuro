@@ -17,12 +17,12 @@ html {
 }
 
 body {
+    height: 900vh;
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     color: #444;
     line-height: 1.9;
     background-color: #f3f4f8;
-    position: relative;
     height: 100vh;
 }
 
@@ -106,57 +106,6 @@ select {
     padding: 6px;
     border-radius: 4px;
     border: 1px solid #ccc;
-}
-
-/* NAVIGATION */
-.nav {
-    width: 400px;
-    height: 100vh;
-    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    border-radius: 0 0 10px 10px;
-    font-size: 25px;
-    font-weight: 900;
-    position: absolute;
-}
-
-.icon-nav {
-    color: #007bff;
-}
-
-.nav__item {
-    box-sizing: border-box;
-    box-shadow: 0 0 0 0;
-    display: flex;
-    justify-content: flex-start;
-    transition: 0.5s ease;
-    gap: 20px;
-    padding: 20px 0 20px 20px;
-}
-
-.nav__item:hover {
-    color: var(--color-secondary);
-    cursor: pointer;
-    background-color: #f0f0f0;
-    transition: 0.5s;
-}
-
-.nav__item_open-close {
-    padding: 0px 15px;
-    display: flex;
-    font-size: 24px;
-    color: black;
-    gap: 20px;
-}
-
-.nav__item_open-close span {
-    font-size: 24px;
-    color: #444;
-}
-
-.nav__link {
-    text-decoration: none;
-    color: inherit;
 }
 
 .pagina__container {
