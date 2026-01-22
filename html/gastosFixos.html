@@ -18,23 +18,21 @@
         <div id="header"></div>
 
         <div class="pagina__container">
-            <h1>Gastos Fixos</h1>
-
-            <form class="filtros-gastos-fixos">
-                <label>
-                    Mês:
-                    <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
-                </label>
-                <label>
-                    Ano:
-                    <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
-                </label>
-                <button type="button" id="buscar">Buscar</button>
-            </form>
-
             <div class="gastos-fixos-totais"></div>
 
             <div class="gastos-fixos"></div>
+
+            <div class="titulo-da-pagina">
+                <span>DESPESAS FIXAS, </span>
+                <label>
+                    <input type="number" id="mes" min="1" max="12" placeholder="10" />
+                </label>
+                <span>, </span>
+                <label>
+                    <input type="number" id="ano" min="2000" max="2100" placeholder="2025" />
+                </label>
+                <button type="button" id="buscar"><i class="bi bi-search"></i></button>
+            </div>
         </div>
         <script src="/js/loadComponents.js"></script>
         <script src="/js/gastosFixos.js"></script>

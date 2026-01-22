@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap" rel="stylesheet" />
-        <link rel="shortcut icon" href="icone5.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/icons/icone5.ico" type="image/x-icon" />
         <link rel="stylesheet" href="/css/style.css" />
         <link rel="stylesheet" href="/css/gastosDiarios.css" />
         <link rel="stylesheet" href="/css/nav.css" />
@@ -42,7 +42,8 @@
                     Itens por página:
                     <input type="number" id="qtdPorPagina" min="1" value="10" />
                 </label>
-                <button type="button" id="buscar"><i class="bi bi-search"></i></button>
+                <button type="button" id="buscar" class="butaoPadrao"><i class="bi bi-search"></i></button>
+                <button type="button" id="lancardespesa" class="butaoPadrao">+</button>
             </form>
 
             <ul class="lista-gastos"></ul>
@@ -54,8 +55,6 @@
                     <select id="pagina-select"></select>
                     <button id="proximo">Próxima</button>
                 </div>
-
-                <button type="button" id="lancardespesa">Lançar nova despesa</button>
             </div>
         </div>
 

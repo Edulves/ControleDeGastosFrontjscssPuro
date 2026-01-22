@@ -101,10 +101,6 @@ button:active {
     padding: 6px 12px;
 }
 
-.pagina__container {
-    margin: 0px 150px 50px 150px;
-}
-
 .filtros input {
     height: 15px;
     padding: 1rem 1.5rem;
@@ -127,4 +123,10 @@ button:active {
 .hidden {
     visibility: hidden;
     opacity: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

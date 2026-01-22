@@ -1,3 +1,8 @@
+.pagina__container {
+    margin: 0 150px 0px 210px;
+    padding: 50px 0 50px 0;
+}
+
 .lancamentos {
     display: grid;
     grid-template-columns: 150px 150px 450px 1fr;
@@ -85,7 +90,7 @@
 }
 
 /*Barra de buscas*/
-#buscar {
+.butaoPadrao {
     display: flex;
     justify-content: center;
     align-items: center;

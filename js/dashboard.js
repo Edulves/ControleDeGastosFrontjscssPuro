@@ -7,6 +7,9 @@ const inputFimPeriodo = document.getElementById("periodoDeFim");
 const ctxMainChart = document.getElementById("mainChart");
 const ctxDayChart = document.getElementById("exDayChart");
 const btnBuscar = document.getElementById("buscar");
+const chartMain = document.querySelector(".chartMain");
+const ChartNotFoundCategories = document.querySelector(".ChartNotFoundCategories");
+const ChartNotFoundDays = document.querySelector(".ChartNotFoundDays");
 
 let dadosDash = [];
 async function getDadosDash() {
@@ -15,8 +18,8 @@ async function getDadosDash() {
         const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
         const ano = document.getElementById("ano").value || dataAtual.getFullYear();
 
-        inputMes.placeholder = `Ex: ${mes.toString().padStart(2, "0")}`;
-        inputAno.placeholder = `Ex: ${ano.toString().padStart(2, "0")}`;
+        inputMes.placeholder = `${mes.toString().padStart(2, "0")}`;
+        inputAno.placeholder = `${ano.toString().padStart(2, "0")}`;
 
         const params = new URLSearchParams();
         params.append("Mes", Number(mes));
@@ -30,6 +33,26 @@ async function getDadosDash() {
         });
 
         if (!response.ok) {
+            ChartNotFoundCategories.innerHTML = "";
+
+            const containsCategoryHidden = chartMain.classList.contains("hidden");
+            if (!containsCategoryHidden) {
+                chartMain.classList.add("hidden");
+            }
+
+            const containsNotFoundHidden = ChartNotFoundCategories.classList.contains("hidden");
+            if (containsNotFoundHidden) {
+                ChartNotFoundCategories.classList.remove("hidden");
+            }
+
+            const elementImg = document.createElement("img");
+
+            elementImg.src = "../Img/DashBoardImgs/NenhumDadoEncontrado.png";
+            elementImg.alt = "Imagem dados não encontrados";
+            elementImg.classList.add("img-dash-notFound");
+
+            ChartNotFoundCategories.appendChild(elementImg);
+
             // Lê o corpo da resposta (pode ser JSON)
             const erroJson = await response.json();
 
@@ -37,14 +60,24 @@ async function getDadosDash() {
             throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
         }
 
-        dadosDash = await response.json();
+        const containsCategoryHidden = chartMain.classList.contains("hidden");
+        if (containsCategoryHidden) {
+            chartMain.classList.remove("hidden");
+            ChartNotFoundCategories.classList.add("hidden");
+            chartMain.destroy();
+            chartMain = null;
+        }
 
+        dadosDash = await response.json();
+        const qtdCategorias = dadosDash.listaDeGastosPorCategoria.length;
         const labels = dadosDash.listaDeGastosPorCategoria.map((item) => item.nomeDaCategoria.toUpperCase());
         const dataSet = dadosDash.listaDeGastosPorCategoria.map((item) => item.valorGasto);
+        const colors = dadosDash.listaDeGastosPorCategoria.map((_, index) => `rgb(27, 145, 255, ${(index + 1) / qtdCategorias}`);
+        colors.reverse();
 
-        createMainChart("Meus gastos", labels, dataSet);
+        createMainChart("Meus gastos", labels, dataSet, colors);
     } catch (error) {
-        alert(error.message);
+        console.log(error.message);
     }
 }
 
@@ -53,9 +86,13 @@ async function getDadosDashPequeno() {
         const dataAtual = new Date();
         const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
         const ano = document.getElementById("ano").value || dataAtual.getFullYear();
+        const areaTotalGastos = document.querySelector(".totais");
+        areaTotalGastos.innerHTML = "";
 
-        inputMes.placeholder = `Ex: ${mes.toString().padStart(2, "0")}`;
-        inputAno.placeholder = `Ex: ${ano.toString().padStart(2, "0")}`;
+        inputMes.placeholder = `${mes.toString().padStart(2, "0")}`;
+        inputAno.placeholder = `${ano.toString().padStart(2, "0")}`;
+        inputMes.value = "";
+        inputAno.value = "";
 
         const params = new URLSearchParams();
         params.append("Mes", Number(mes));
@@ -69,6 +106,13 @@ async function getDadosDashPequeno() {
         });
 
         if (!response.ok) {
+            dadosDash = [];
+            const totalGastos = 0;
+            const totalelementos = 1;
+
+            criarCardEGraficoPequeno(dadosDash, totalGastos, areaTotalGastos, totalelementos);
+            criarCardsTotais(totalGastos, totalelementos);
+
             // Lê o corpo da resposta (pode ser JSON)
             const erroJson = await response.json();
 
@@ -77,21 +121,79 @@ async function getDadosDashPequeno() {
         }
 
         dadosDash = await response.json();
+        const totalGastos = dadosDash.total;
+        const totalelementos = dadosDash.listaDeGastosPorDia.length;
 
-        const totalMes = Number(dadosDash.total);
-        const labels = dadosDash.listaDeGastosPorDia.map((item) => new Date(item.dataLancamento).getDate());
-        const dataSet = dadosDash.listaDeGastosPorDia.map((item) => item.valorPorDia);
-        const percent = dadosDash.listaDeGastosPorDia.map((item) => `rgb(223, 4, 6, ${item.valorPorDia / totalMes + 0.45}`);
-
-        createDayChart("gastos diarios", labels, dataSet, percent);
+        criarCardEGraficoPequeno(dadosDash, totalGastos, totalelementos);
+        criarCardsTotais(totalGastos, totalelementos);
     } catch (error) {
-        alert(error.message);
+        console.log(error.message);
     }
 }
 
+const criarCardEGraficoPequeno = function (dadosDash, totalGastos, totalelementos) {
+    const chartDay = document.querySelector(".chartDay");
+
+    if (dadosDash.length === 0) {
+        ChartNotFoundDays.innerHTML = "";
+
+        const containsDayHidden = chartDay.classList.contains("hidden");
+        if (!containsDayHidden) {
+            chartDay.classList.add("hidden");
+        }
+
+        const containsNotFoundHidden = ChartNotFoundDays.classList.contains("hidden");
+        if (containsNotFoundHidden) {
+            ChartNotFoundDays.classList.remove("hidden");
+        }
+
+        const elementImg = document.createElement("img");
+
+        elementImg.src = "../Img/DashBoardImgs/NenhumDadoEncontrado.png";
+        elementImg.alt = "Imagem dados não encontrados";
+        elementImg.classList.add("img-dash-notFound");
+
+        ChartNotFoundDays.appendChild(elementImg);
+        return;
+    }
+
+    const containsDayHidden = chartDay.classList.contains("hidden");
+    if (containsDayHidden) {
+        chartDay.classList.remove("hidden");
+
+        dayChart.destroy();
+        dayChart = null;
+    }
+
+    const containsNoutFoudHidden = ChartNotFoundDays.classList.contains("hidden");
+    if (!containsNoutFoudHidden) ChartNotFoundDays.classList.add("hidden");
+
+    const labels = dadosDash.listaDeGastosPorDia.map((item) => new Date(item.dataLancamento).getDate());
+    const dataSet = dadosDash.listaDeGastosPorDia.map((item) => item.valorPorDia);
+    createDayChart("gastos diarios", labels, dataSet, ["#e84748"]);
+};
+
+const criarCardsTotais = function (totalGastos, totalelementos) {
+    const areaTotalGastos = document.querySelector(".totais");
+
+    for (let index = 1; index <= 2; index++) {
+        const elemento = document.createElement("div");
+
+        elemento.innerHTML = `
+        <div class="card-dash"> 
+            <p><strong>${index === 1 ? "Mensal" : "Diario"}: </strong> </p>
+            <p class="valores">R$ ${(index === 1 ? totalGastos : totalGastos / totalelementos).toFixed(2)}</p>
+            <div class="img-cards-dash">
+                <img src="../Img/DashBoardImgs/${index === 1 ? "mes" : "average"}.png" class="img-dash"/>
+            </div>
+        </div>
+        `;
+        areaTotalGastos.appendChild(elemento);
+    }
+};
+
 let mainChart = null;
-function createMainChart(title, labels, dataSet) {
-    // Destroy previous chart if it exists
+function createMainChart(title, labels, dataSet, colors) {
     if (mainChart) {
         // 🔄 atualiza com animação
         mainChart.data.labels = labels;
@@ -109,8 +211,8 @@ function createMainChart(title, labels, dataSet) {
                 {
                     label: title,
                     data: dataSet,
-                    backgroundColor: ["#53d4f3", "#3891a6"],
-                    borderWidth: 1,
+                    backgroundColor: colors,
+                    borderRadius: 10,
                 },
             ],
         },
@@ -149,7 +251,6 @@ function createMainChart(title, labels, dataSet) {
 
 let dayChart = null;
 function createDayChart(title, labels, dataSet, colors) {
-    // Destroy previous chart if it exists
     if (dayChart) {
         // 🔄 atualiza com animação
         dayChart.data.labels = labels;
@@ -169,7 +270,7 @@ function createDayChart(title, labels, dataSet, colors) {
                     label: title,
                     data: dataSet,
                     backgroundColor: colors,
-                    borderWidth: 1,
+                    borderRadius: 5,
                 },
             ],
         },

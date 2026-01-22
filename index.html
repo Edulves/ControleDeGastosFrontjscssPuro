@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -9,31 +9,38 @@
         <link rel="stylesheet" href="/css/dashboard.css" />
         <link rel="stylesheet" href="/css/nav.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
         <title>Controle de Gastos</title>
     </head>
     <body>
         <div id="header"></div>
         <div class="pagina__container">
-            <form id="filtros-dash">
-                <label>
-                    <span>Mês:</span>
-                    <input type="number" id="mes" min="1" max="12" placeholder="Ex: 10" />
-                </label>
-                <label>
-                    <span>Ano:</span>
-                    <input type="number" id="ano" min="2000" max="2100" placeholder="Ex: 2025" />
-                </label>
-                <button type="button" id="buscar">Buscar</button>
-            </form>
+            <div class="totais"></div>
             <div class="chartArea">
                 <span class="title-charts title-main-chart">Despesas por categoria</span>
-                <div class="chartMain">
+                <div class="chartMain chart">
                     <canvas id="mainChart"></canvas>
                 </div>
+                <div class="ChartNotFoundCategories chartNotFound chart hidden"></div>
                 <span class="title-charts title-day-chart">Despesas diarias</span>
-                <div class="chartDay">
+                <div class="chartDay chart">
                     <canvas id="exDayChart"></canvas>
                 </div>
+                <div class="ChartNotFoundDays chartNotFound chart hidden"></div>
+            </div>
+            <div class="titulo-da-pagina">
+                <span>VISÃO GERAL,</span>
+                <label>
+                    <input type="number" id="mes" min="1" max="12" placeholder="10" />
+                </label>
+                <span>,</span>
+                <label>
+                    <input type="number" id="ano" min="2000" max="2100" placeholder="2025" />
+                </label>
+                <button type="button" id="buscar"><i class="bi bi-search"></i></button>
             </div>
         </div>
     </body>

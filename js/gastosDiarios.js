@@ -127,7 +127,7 @@ async function registrarNovoGasto(e) {
 
         linhas.forEach((linha, i) => {
             const data = linha.querySelector(".dataDoLancamento").value;
-            const valor = linha.querySelector(".valorgasto").value;
+            const valor = linha.querySelector(".valorgasto_lancamentos_diarios").value;
             const observacao = linha.querySelector(".observacao").value;
             const categoriaId = linha.querySelector(".categoriaId").value;
 
@@ -144,7 +144,7 @@ async function registrarNovoGasto(e) {
                 categoriaId,
             });
 
-            linha.querySelector(".valorgasto").value = "";
+            linha.querySelector(".valorgasto_lancamentos_diarios").value = "";
             linha.querySelector(".observacao").value = "";
             linha.querySelector(".categoriaId").value = "";
         });

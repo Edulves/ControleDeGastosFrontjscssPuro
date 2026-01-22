@@ -1,3 +1,13 @@
+:root {
+    --color-primary: #444;
+    --color-secondary: #0087ff;
+}
+
+.pagina__container {
+    margin: 0 150px 0px 210px;
+    padding: 100px 0 100px 0;
+}
+
 .gastos-fixos {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -7,6 +17,7 @@
 .gastos-fixos-totais {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    /* grid-template-rows: repeat(2, 1fr); */
     gap: 20px;
     padding: 10px;
     margin-bottom: 40px;
@@ -55,4 +66,44 @@
 .img-gastos-fixos {
     display: flex;
     align-items: flex-end;
+}
+
+.titulo-da-pagina {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 250px;
+    font-size: 60px;
+    font-family: "Play", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.titulo-da-pagina span {
+    padding: 0;
+    margin-right: 20px;
+}
+
+.titulo-da-pagina input {
+    border: none;
+    background-color: #f3f4f8;
+    margin-bottom: 15px;
+    font-size: 60px;
+    font-family: "Play", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--color-primary);
+    box-sizing: border-box;
+}
+
+#mes {
+    width: 85px;
+    outline: none;
+    box-shadow: none;
+}
+
+#ano {
+    width: 160px;
+    outline: none;
+    box-shadow: none;
 }
