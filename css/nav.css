@@ -19,6 +19,7 @@
 
 .icon-nav {
     color: #007bff;
+    margin-right: 10px;
 }
 
 .nav__item {
@@ -27,7 +28,7 @@
     box-shadow: 0 0 0 0;
     transition: 0.5s ease;
     gap: 20px;
-    padding: 20px 0 20px 20px;
+    padding: 00px 0 0px 0px;
     min-width: 400px;
 }
 
@@ -41,4 +42,11 @@
 .nav__link {
     text-decoration: none;
     color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0 20px 20px;
+
+    width: 100%;
+    height: 100%;
 }

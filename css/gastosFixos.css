@@ -5,7 +5,7 @@
 
 .pagina__container {
     margin: 0 150px 0px 210px;
-    padding: 100px 0 100px 0;
+    padding: 100px 0 50px 0;
 }
 
 .gastos-fixos {
@@ -71,23 +71,23 @@
 .titulo-da-pagina {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-end;
+    align-items: center;
     height: 250px;
     font-size: 60px;
     font-family: "Play", sans-serif;
     font-weight: 400;
     font-style: normal;
+    margin-top: 100px;
 }
 
 .titulo-da-pagina span {
     padding: 0;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .titulo-da-pagina input {
     border: none;
     background-color: #f3f4f8;
-    margin-bottom: 15px;
     font-size: 60px;
     font-family: "Play", sans-serif;
     font-weight: 400;
@@ -106,4 +106,8 @@
     width: 160px;
     outline: none;
     box-shadow: none;
+}
+
+#buscar {
+    margin: 0 0 0 10px;
 }
