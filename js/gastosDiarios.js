@@ -34,6 +34,7 @@ async function carregarDados() {
         const ano = periodoDeInicio ? "" : document.getElementById("ano").value || dataAtual.getFullYear();
         const categoria = document.getElementById("categoria").value;
         const qtdPorPagina = document.getElementById("qtdPorPagina").value;
+        const observacao = document.getElementById("observacao").value;
 
         inputMes.placeholder = `Ex: ${mes.toString().padStart(2, "0")}`;
         inputAno.placeholder = `Ex: ${ano.toString().padStart(2, "0")}`;
@@ -41,6 +42,7 @@ async function carregarDados() {
         const params = new URLSearchParams();
         if (mes) params.append("Mes", mes);
         if (ano) params.append("Ano", ano);
+        if (observacao) params.append("Observacao", observacao);
         if (periodoDeInicio) params.append("InicioDoPeriodo", periodoDeInicio);
         if (periodoDeFim) params.append("FimDoPeriodo", periodoDeFim);
         if (categoria) params.append("Categoria", categoria);
