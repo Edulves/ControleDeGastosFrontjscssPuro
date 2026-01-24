@@ -55,8 +55,14 @@ async function buscarGastosFixos() {
                 <p class="valores">R$ ${item.valorGastoFixo.toFixed(2)}</p>
                 <span>${item.pago ? `Menos uma 🙌` : `Pendente 💣`}</span>
                 </div>
-                <div class="img-gastos-fixos">
-                        <img src="../Img/gastosFixosImgs/${item.pago ? "checked" : "delete"}.png"  class="img-cards-gastos-fixos"/>
+                <div class="configs">
+                    <div class="gears">
+                        <i class="bi bi-gear-fill gear"></i>
+                        <i class="bi bi-gear gear"></i>
+                    </div>
+                    <div class="img-gastos-fixos">
+                            <img src="../Img/gastosFixosImgs/${item.pago ? "checked" : "delete"}.png"  class="img-cards-gastos-fixos"/>
+                    </div>
                 </div>
             `;
             listaGatos.appendChild(elemento);

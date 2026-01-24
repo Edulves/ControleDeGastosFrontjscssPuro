@@ -111,3 +111,41 @@
 #buscar {
     margin: 0 0 0 10px;
 }
+
+.configs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gears {
+    position: relative;
+}
+
+.gear {
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+/* engrenagem vazada */
+.bi-gear {
+    z-index: 1;
+}
+
+/* engrenagem preenchida */
+.bi-gear-fill {
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+/* hover no container */
+.gears:hover .bi-gear-fill {
+    opacity: 1;
+}
+
+/* opcional: esconder a vazada no hover */
+.gears:hover .bi-gear {
+    opacity: 0;
+}
