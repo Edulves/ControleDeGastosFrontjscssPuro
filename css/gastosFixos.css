@@ -112,40 +112,79 @@
     margin: 0 0 0 10px;
 }
 
-.configs {
+.buttons-search-update {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
-.gears {
-    position: relative;
+/*Formulario de lançamento de despesas diárias*/
+.form-atualizar-lancamentos {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100rem;
+    background-color: #f3f3f3;
+    padding: 2rem 2rem;
+    box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: all 0.5s;
 }
 
-.gear {
+.modal_lancamentos_fixos_header {
+    margin-bottom: 20px;
+}
+
+.form_lancamentos_fixos select {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.linhas_lancamentos_fixos {
+    margin: 0 1rem;
+    display: grid;
+    /* grid-template-columns: 1fr 8fr 3fr 1fr; */
+    grid-template-columns: 160px 500px 100px 1fr;
+    gap: 20px;
+    justify-content: center;
+}
+
+.linhas_lancamentos_fixos input {
+    font-size: 1rem;
+}
+
+.linhas_lancamentos_fixos span {
+    font-weight: bold;
+}
+
+.btn--close-lancamentos_fixos {
+    font-family: inherit;
+    color: black;
     position: absolute;
-    top: 0;
-    right: 10px;
+    top: 1rem;
+    right: 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: red;
+    border: 3px solid black;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    padding: 4px 11px;
 }
 
-/* engrenagem vazada */
-.bi-gear {
-    z-index: 1;
+.btn--remover-lancamentos_fixos {
+    background: red;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-/* engrenagem preenchida */
-.bi-gear-fill {
-    opacity: 0;
-    z-index: 2;
-    transition: opacity 0.3s ease;
-}
-
-/* hover no container */
-.gears:hover .bi-gear-fill {
-    opacity: 1;
-}
-
-/* opcional: esconder a vazada no hover */
-.gears:hover .bi-gear {
-    opacity: 0;
+.buttons-update {
+    display: flex;
+    gap: 10px;
 }

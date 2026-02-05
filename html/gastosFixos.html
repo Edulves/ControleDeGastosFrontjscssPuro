@@ -31,9 +31,26 @@
                 <label>
                     <input type="number" id="ano" min="2000" max="2100" placeholder="2025" />
                 </label>
-                <button type="button" id="buscar"><i class="bi bi-search"></i></button>
+                <div class="buttons-search-update">
+                    <button type="button" id="buscar"><i class="bi bi-search"></i></button>
+                    <button type="button" id="atualizar"><i class="bi bi-gear-fill gear"></i></i></button>
+                </div>
             </div>
         </div>
+
+        <div class="form-atualizar-lancamentos hidden">
+            <button class="btn--close-lancamentos_fixos"><i class="bi bi-x-lg"></i></button>
+            <h2 class="modal_lancamentos_fixos_header">DESPESAS FIXAS:</h2>
+            <form class="form_lancamentos_fixos">
+            </form>
+
+            <div class="buttons-update">
+                <button type="button" class="btn btn--atualizar-lancamentos_fixos">Atualizar <i class="bi bi-arrow-repeat"></i></button>
+                <button type="button" class="btn btn--adicionar-lancamentos_fixos">Adicionar +</button>
+            </div>
+        </div>
+        <div class="overlay hidden"></div>
+
         <script src="/js/loadComponents.js"></script>
         <script src="/js/gastosFixos.js"></script>
     </body>
