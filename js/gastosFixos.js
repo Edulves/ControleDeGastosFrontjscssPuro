@@ -393,8 +393,8 @@ function atualizarCampoDataDePesquisa() {
     inputMes.placeholder = `${mes.toString().padStart(2, "0")}`;
     inputAno.placeholder = `${ano.toString()}`;
 
-    inputMes.value = "";
-    inputAno.value = "";
+    inputMes.value = `${mes.toString().padStart(2, "0")}`;
+    inputAno.value = `${ano.toString()}`;
 }
 
 function closeModal(e) {
