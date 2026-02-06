@@ -188,3 +188,7 @@
     display: flex;
     gap: 10px;
 }
+
+.input-data-duplicar {
+    font-size: large;
+}

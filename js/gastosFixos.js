@@ -5,6 +5,7 @@ const btnAtualizar = document.querySelector(".btn--atualizar-lancamentos_fixos")
 const btnAbrirFormAtualizar = document.getElementById("atualizar");
 const btnsCloseModal = document.querySelector(".btn--close-lancamentos_fixos");
 const btnAdicionarGastofixo = document.querySelector(".btn--adicionar-lancamentos_fixos");
+const btnDuplicar = document.querySelector(".btn--duplicar-lancamentos_fixos");
 const inputMes = document.getElementById("mes");
 const inputAno = document.getElementById("ano");
 const containerGastosFixos = document.querySelector(".gastos-fixos");
@@ -188,7 +189,7 @@ async function obterTotaisGastosFixos() {
     }
 }
 
-async function atualizarDadosGastosFixos(e) {
+async function atualizarDadosGastosFixos(e, duplicar, dataDuplicar) {
     try {
         const lancamentosGastosFixos = document.querySelectorAll(".linhas_lancamentos_fixos");
         const lacamentos = [];
@@ -202,10 +203,10 @@ async function atualizarDadosGastosFixos(e) {
 
             if (linha.classList.contains("header")) return;
 
-            const idLancamento = Number(linha.dataset.id);
+            const idLancamento = duplicar ? 0 : Number(linha.dataset.id);
             const descrição = linha.querySelector(".DescricaoUpdate").value;
             const valor = linha.querySelector(".valorDespesa_lancamentos_fixos").value;
-            const data = linha.querySelector(".dataDoLancamento").value;
+            const data = duplicar ? dataDuplicar : linha.querySelector(".dataDoLancamento").value;
 
             if (!data) throw new Error(`Data obrigatória na linha ${i + 1}`);
 
@@ -277,6 +278,20 @@ async function atualizarConfirmacaoDePagamento(e) {
         // alert(texto);
 
         refresh();
+    } catch (error) {
+        alert(error);
+        console.error(error);
+    }
+}
+
+async function duplicarDespesasFixas(e) {
+    try {
+        const mesDuplicar = document.querySelector(".input-data-duplicar").value;
+
+        if (!mesDuplicar) throw new Error("Mês para o qual duplicar obrigatorio");
+
+        confirm(`Duplicar despesas para o mês ${mesDuplicar}?`);
+        await atualizarDadosGastosFixos(e, true, mesDuplicar);
     } catch (error) {
         alert(error);
         console.error(error);
@@ -423,6 +438,8 @@ btnAtualizar.addEventListener("click", (e) => {
 btnsCloseModal.addEventListener("click", closeModal);
 
 btnAdicionarGastofixo.addEventListener("click", adicionarLinhaLancamentoGastoFixo);
+
+btnDuplicar.addEventListener("click", duplicarDespesasFixas);
 
 form_lancamentos_fixos.addEventListener("click", (e) => {
     if (e.target.closest("button.btn--remover-lancamentos_fixos")) {
