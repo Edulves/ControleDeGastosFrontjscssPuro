@@ -5,7 +5,8 @@
 
 .lancamentos {
     display: grid;
-    grid-template-columns: 150px 150px 450px 1fr;
+    grid-template-columns: 150px 150px 450px 1fr 50px;
+    align-items: center;
 }
 
 .categoria_Lancamento-Diario {
@@ -97,4 +98,25 @@
     height: 45px;
     width: 45px;
     margin: 25px 0 0 0;
+}
+
+.edit-line {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    height: 40px;
+    width: 25px;
+}
+
+.btns-form {
+    position: relative;
+}
+
+.btn--atualizar-lancamentos_diarios {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
 }

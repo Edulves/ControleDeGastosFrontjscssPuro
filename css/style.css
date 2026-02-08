@@ -9,7 +9,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: b;
+    box-sizing: border-box;
 }
 
 html {
@@ -102,10 +102,10 @@ button:active {
 }
 
 .filtros input {
-    height: 15px;
+    height: 47px;
     padding: 1rem 1.5rem;
     border: 1px solid #ddd;
-    border-radius: 0.5rem;
+    border-radius: 4px;
 }
 
 .overlay {
