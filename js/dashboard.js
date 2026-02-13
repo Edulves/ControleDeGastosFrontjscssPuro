@@ -17,10 +17,6 @@ async function getDadosDash() {
         const dataAtual = new Date();
         const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
         const ano = document.getElementById("ano").value || dataAtual.getFullYear();
-
-        inputMes.placeholder = `${mes.toString().padStart(2, "0")}`;
-        inputAno.placeholder = `${ano.toString().padStart(2, "0")}`;
-
         const params = new URLSearchParams();
         params.append("Mes", Number(mes));
         params.append("Ano", Number(ano));
@@ -88,11 +84,6 @@ async function getDadosDashPequeno() {
         const ano = document.getElementById("ano").value || dataAtual.getFullYear();
         const areaTotalGastos = document.querySelector(".totais");
         areaTotalGastos.innerHTML = "";
-
-        inputMes.placeholder = `${mes.toString().padStart(2, "0")}`;
-        inputAno.placeholder = `${ano.toString().padStart(2, "0")}`;
-        inputMes.value = "";
-        inputAno.value = "";
 
         const params = new URLSearchParams();
         params.append("Mes", Number(mes));
@@ -173,7 +164,7 @@ const criarCardEGraficoPequeno = function (dadosDash, totalGastos, totalelemento
     createDayChart("gastos diarios", labels, dataSet, ["#e84748"]);
 };
 
-const criarCardsTotais = function (totalGastos, totalelementos) {
+function criarCardsTotais(totalGastos, totalelementos) {
     const areaTotalGastos = document.querySelector(".totais");
 
     for (let index = 1; index <= 2; index++) {
@@ -190,7 +181,7 @@ const criarCardsTotais = function (totalGastos, totalelementos) {
         `;
         areaTotalGastos.appendChild(elemento);
     }
-};
+}
 
 let mainChart = null;
 function createMainChart(title, labels, dataSet, colors) {
@@ -313,9 +304,22 @@ function createDayChart(title, labels, dataSet, colors) {
     });
 }
 
+function atualizarCampoDataDePesquisa() {
+    const dataAtual = new Date();
+    const mes = document.getElementById("mes").value || dataAtual.getMonth() + 1;
+    const ano = document.getElementById("ano").value || dataAtual.getFullYear();
+
+    inputMes.placeholder = `${mes.toString().padStart(2, "0")}`;
+    inputAno.placeholder = `${ano.toString()}`;
+
+    inputMes.value = `${mes.toString().padStart(2, "0")}`;
+    inputAno.value = `${ano.toString()}`;
+}
+
 btnBuscar.addEventListener("click", (e) => {
     getDadosDash();
     getDadosDashPequeno();
+    atualizarCampoDataDePesquisa();
 });
 
 // Carrega automaticamente a primeira página
