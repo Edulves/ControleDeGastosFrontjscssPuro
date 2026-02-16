@@ -265,10 +265,6 @@ function resetarLinhasLancamentos() {
     });
 }
 
-function preencherLinhaParaAtualizar(e) {
-    e;
-}
-
 async function openModal(e, who) {
     e.preventDefault();
     await obterCategoriasdegastos(e);
@@ -310,6 +306,58 @@ function closeModal(e) {
     overlay.classList.add("hidden");
 }
 
+async function atualizarLancamentoDiario() {
+    try {
+        const linha = document.querySelector(".linhas_lancamentos_diarios");
+        console.log(linha);
+        const data = linha.querySelector(".dataDoLancamento").value;
+        const valor = linha.querySelector(".valorgasto_lancamentos_diarios").value;
+        const observacao = linha.querySelector(".observacao").value;
+        const categoriaId = linha.querySelector(".categoriaId").value;
+        const id = linha.dataset.id;
+        console.log(id, data, valor, observacao, categoriaId);
+
+        if (!categoriaId) throw new Error(`Categoria obrigatória`);
+
+        if (!data) throw new Error(`Data obrigatória`);
+
+        if (!valor || parseFloat(valor) <= 0) throw new Error(`Valor de gasto inválido`);
+
+        btnAtualizar.disabled = true;
+
+        const response = await fetch("https://localhost:7280/ControleDeGastos/AtualizarLancamentosDeGastosDiarios", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify([
+                {
+                    idGastosDiario: id,
+                    dataDoLancamento: data,
+                    valorgasto: valor,
+                    observacao: observacao,
+                    categoriaId: categoriaId,
+                },
+            ]),
+        });
+
+        if (!response.ok) {
+            // Lê o corpo da resposta (pode ser JSON)
+            const erroJson = await response.json();
+
+            // Lança o erro com base no conteúdo retornado
+            throw new Error(erroJson.detalhe || erroJson.titulo || "Erro ao buscar dados");
+        }
+
+        const texto = await response.text();
+        alert(texto);
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        btnAtualizar.disabled = false;
+    }
+}
+
 btnBuscar.addEventListener("click", () => {
     paginaAtual = 1;
     carregarDados();
@@ -338,6 +386,8 @@ btnsCloseModal.addEventListener("click", closeModal);
 btnCadastrarGasto.addEventListener("click", registrarNovoGasto);
 
 btnAdicionarLinhaDeGasto.addEventListener("click", adicionarNovaLinhaDeGastos);
+
+btnAtualizar.addEventListener("click", atualizarLancamentoDiario);
 
 selectPagina.addEventListener("change", (e) => {
     paginaAtual = parseInt(e.target.value);

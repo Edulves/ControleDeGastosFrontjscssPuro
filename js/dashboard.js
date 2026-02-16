@@ -325,3 +325,4 @@ btnBuscar.addEventListener("click", (e) => {
 // Carrega automaticamente a primeira página
 getDadosDash();
 getDadosDashPequeno();
+atualizarCampoDataDePesquisa();
