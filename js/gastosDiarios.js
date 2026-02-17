@@ -24,9 +24,6 @@ const tituloForm = document.querySelector(".modal_lancamentos_diarios_header");
 let paginaAtual = 1;
 let totalDePaginas = 1;
 
-// Carrega automaticamente a primeira página
-carregarDados();
-
 async function carregarDados() {
     try {
         const dataAtual = new Date();
@@ -96,7 +93,6 @@ async function carregarDados() {
 
         atualizarPaginacao(dados.paginaAtual, dados.totalDePaginas);
     } catch (erro) {
-        alert(erro);
         console.error(erro);
     }
 }
@@ -120,7 +116,6 @@ async function obterCategoriasdegastos() {
 
         preencherSelectCategorias(selectInicial);
     } catch (error) {
-        alert(error);
         console.error(error);
     }
 }
@@ -306,7 +301,7 @@ function closeModal(e) {
     overlay.classList.add("hidden");
 }
 
-async function atualizarLancamentoDiario() {
+async function atualizarLancamentoDiario(e) {
     try {
         const linha = document.querySelector(".linhas_lancamentos_diarios");
         console.log(linha);
@@ -351,6 +346,9 @@ async function atualizarLancamentoDiario() {
 
         const texto = await response.text();
         alert(texto);
+
+        refresh();
+        closeModal(e);
     } catch (error) {
         alert(error.message);
     } finally {
@@ -408,3 +406,9 @@ formLancamentosDiarios.addEventListener("click", function (e) {
         removerLinhaDeGastos(e);
     }
 });
+
+function refresh() {
+    carregarDados();
+}
+
+refresh();
