@@ -10,7 +10,6 @@ const btnProximaPagina = document.getElementById("proximo");
 const btnAtualizar = document.querySelector(".btn--atualizar-lancamentos_diarios");
 const inputMes = document.getElementById("mes");
 const inputAno = document.getElementById("ano");
-const lancamentosDataDoLancamento = document.getElementById("dataDoLancamento");
 const lancamentosValorgasto = document.getElementById("valorgasto");
 const lancamentosObservacao = document.getElementById("observacao");
 const modal = document.querySelector(".modal");
